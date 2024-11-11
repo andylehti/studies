@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .content {
+            max-width: 800px;
+            margin: auto;
+            padding: 1rem;
+        }
+
+        /* Print Button Styling */
+        .print-button {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        /* Exclude Non-Print Elements */
+        @media print {
+            .print-button {
+                display: none;
+            }
+        }
+
+        /* Print-Specific Styles */
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+            }
+
+            @page {
+                margin: 1in 1.25in; /* Top/Bottom: 1in, Left/Right: 1.25in */
+            }
+
+            h1, h2, h3 {
+                text-align: left;
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+
+            ul, ol, p {
+                text-align: justify;
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+
+            /* Header and Footer */
+            header, footer {
+                position: fixed;
+                left: 0;
+                right: 0;
+                color: gray;
+                font-size: 9pt;
+            }
+
+            header {
+                top: 0;
+                text-align: center;
+                margin-top: -0.5in; /* Adjust as needed */
+            }
+
+            footer {
+                bottom: 0;
+                display: flex;
+                justify-content: space-between;
+                padding-left: 1.25in;
+                padding-right: 1.25in;
+                margin-bottom: -0.5in; /* Adjust as needed */
+                font-size: 10pt;
+            }
+
+            /* Page Number */
+            footer .page-number:after {
+                content: counter(page);
+            }
+
+            /* Adjust Content Position */
+            .content {
+                margin-top: 2in; /* Space for header */
+                margin-bottom: 1.5in; /* Space for footer */
+            }
+        }
+
+        /* Center Content Vertically */
+        .page-block {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 100vh;
+            page-break-before: always;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Print Button -->
+    <button class="print-button" onclick="window.print()">Print</button>
+
+    <!-- Header -->
+    <header>
+        {{ title }} - DOI: {{ doi }}
+    </header>
+
+    <!-- Main Content -->
+    <div class="content">
+        {{ content }}
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div>{{ author }}</div>
+        <div class="page-number">Page </div>
+    </footer>
+
+    <!-- MathJax for LaTeX Rendering -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+
+</body>
+</html>
